@@ -34,6 +34,7 @@ function App() {
   return (
     <Container>
       <Wrapper>
+        {selectedCity.length}
         <City>{selectedCity}</City>
         <DropdownWrapper>
           <Dropdown onChange={handleProvinceSelection}>
