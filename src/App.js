@@ -34,10 +34,16 @@ function App() {
   return (
     <Container>
       <Wrapper>
-        {selectedCity.length}
-        <City>{selectedCity}</City>
+        {selectedCity.length > 0 && province.length > 0 ? (
+          <City>
+            {selectedCity}, {province}
+          </City>
+        ) : (
+          <City>Please select a province and a city.</City>
+        )}
+
         <DropdownWrapper>
-          <Dropdown onChange={handleProvinceSelection}>
+          <Dropdown province={province} onChange={handleProvinceSelection}>
             <option value="">Select your province</option>
             <option value="Alberta">Alberta</option>
             <option value="British Columbia">British Columbia</option>
@@ -55,7 +61,7 @@ function App() {
             <option value="Saskatchewan">Saskatchewan</option>
             <option value="Yukon Territory">Yukon Territory</option>
           </Dropdown>
-          <Dropdown onChange={handleCityChange}>
+          <Dropdown selectedCity={selectedCity} onChange={handleCityChange}>
             <option value="">Select your city</option>
             {citiesList}
           </Dropdown>
@@ -85,6 +91,13 @@ const Dropdown = styled.select`
   height: 26px;
   padding: 0px 5px;
   margin-bottom: 10px;
+  border-radius: 10px;
+  width: 200px;
+  height: 35px;
+  cursor: pointer;
+  border-width: 2px;
+  border-color: ${(props) =>
+    props.province === "" || props.selectedCity === "" ? "black" : "#BC80F7"};
 `;
 
 const City = styled.h1`
