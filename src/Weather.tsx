@@ -1,15 +1,34 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const Weather = ({ selectedCity }) => {
-  const [weather, setWeather] = useState("");
+interface Props {
+  selectedCity: string
+}
+
+interface Weather {
+  temp_min: number,
+  temp_max: number,
+  description: string
+}
+
+const Weather: React.FC<Props> = ({selectedCity}) => {
+  const [weather, setWeather] = useState<Weather>({
+    temp_min: 0,
+    temp_max: 0,
+    description: ""
+  });
 
   useEffect(() => {
     if (selectedCity !== "") {
       const findWeather = async function () {
         const response = await fetch(`/api/weather/${selectedCity}`);
         const data = await response.json();
-        setWeather(data.data);
+
+        setWeather({
+          temp_min: data.data.main.temp_min,
+          temp_max: data.data.main.temp_max,
+          description: data.data.weather[0].description
+        });
       };
       findWeather();
     }
@@ -21,9 +40,8 @@ const Weather = ({ selectedCity }) => {
   console.log(weather);
 
   let averageTemp = Math.round(
-    (weather.main.temp_min + weather.main.temp_max) / 2
+    (weather.temp_min + weather.temp_max) / 2
   );
-  let weatherDescription = weather.weather[0].description;
 
   return (
     <WeatherList>
@@ -31,7 +49,7 @@ const Weather = ({ selectedCity }) => {
         <strong>Temp °C:</strong> {averageTemp} °C
       </div>
       <div>
-        <strong>Weather:</strong> {weatherDescription}
+        <strong>Weather:</strong> {weather.description}
       </div>
     </WeatherList>
   );

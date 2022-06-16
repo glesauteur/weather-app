@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Weather from "./Weather";
 
-function App() {
-  const [cities, setCities] = useState([]);
-  const [selectedCity, setSelectedCity] = useState("");
-  const [province, setProvince] = useState("");
+
+const App: React.FC = () => {
+  const [cities, setCities] = useState<Array<string>>([]);
+  const [selectedCity, setSelectedCity] = useState<string>("");
+  const [province, setProvince] = useState<string>("");
 
   useEffect(() => {
     if (province !== "") {
@@ -19,11 +20,11 @@ function App() {
     }
   }, [province]);
 
-  const handleProvinceSelection = (e) => {
+  const handleProvinceSelection = (e: React.ChangeEvent<any>): void => {
     setProvince(e.target.value);
   };
 
-  const handleCityChange = (e) => {
+  const handleCityChange = (e: React.ChangeEvent<any>): void => {
     setSelectedCity(e.target.value);
   };
 
@@ -87,7 +88,12 @@ const DropdownWrapper = styled.div`
   justify-content: center;
 `;
 
-const Dropdown = styled.select`
+interface DropdownProps {
+  province?: string,
+  selectedCity?: string
+}
+
+const Dropdown = styled.select<DropdownProps>`
   height: 26px;
   padding: 0px 5px;
   margin-bottom: 10px;
@@ -96,7 +102,7 @@ const Dropdown = styled.select`
   height: 35px;
   cursor: pointer;
   border-width: 2px;
-  border-color: ${(props) =>
+  border-color: ${(props: DropdownProps) =>
     props.province === "" || props.selectedCity === "" ? "black" : "#BC80F7"};
 `;
 
